@@ -20,7 +20,7 @@ import Config
 config :openai,
   api_key: System.get_env("OPENAI_API_KEY"),
   organization_key: System.get_env("OPENAI_ORGANIZATION_KEY"),
-  http_options: [recv_timeout: 20_000]
+  http_options: [recv_timeout: 30_000]
 
 if System.get_env("PHX_SERVER") do
   config :qdsp, QDSPWeb.Endpoint, server: true

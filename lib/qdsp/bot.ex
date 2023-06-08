@@ -12,7 +12,7 @@ defmodule QDSP.Bot do
 
   @spec assist(String.t(), map(), keyword()) :: {:ok, String.t()} | {:error, any()}
   def assist(question, embeddings \\ @embeddings, opts \\ []) do
-    sample_size = Keyword.get(opts, :sample_size, 4)
+    sample_size = Keyword.get(opts, :sample_size, 2)
 
     context = %{
       podemos: context_for_party(question, :podemos, embeddings, sample_size)

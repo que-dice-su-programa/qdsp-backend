@@ -42,9 +42,11 @@ defmodule QDSP.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:mox, "~> 0.3", only: [:dev, :test]},
+      {:progress_bar, "~> 2.0"},
 
       # CSV parser
       {:nimble_csv, "~> 1.2"},
+      {:csv, "~> 3.0"},
 
       # Machine Learning
       {:nx, "~> 0.5"},

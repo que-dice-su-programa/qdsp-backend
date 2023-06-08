@@ -30,7 +30,14 @@ defmodule QDSP.Bot.Embeddings do
     end)
   end
 
-  @spec embed(String.t()) :: {:ok, [float()]}
+  @spec embed(String.t() | list(String.t())) :: {:ok, [float()] | list([float()])}
+  def embed(texts) when is_list(texts) do
+    QDSP.Bot.EmbeddingsModel
+    |> Nx.Serving.batched_run(texts)
+    |> Nx.to_list()
+    |> then(&{:ok, &1})
+  end
+
   def embed(text) do
     QDSP.Bot.EmbeddingsModel
     |> Nx.Serving.batched_run([text])
