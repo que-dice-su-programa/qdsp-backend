@@ -8,8 +8,7 @@ config :qdsp, QDSPWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :qdsp, QDSP.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :qdsp, QDSP.Mailer, adapter: Swoosh.Adapters.Test
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
@@ -19,3 +18,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :qdsp,
+  open_ai: [client: QDSP.OpenAi.Mock]

@@ -43,10 +43,14 @@ defmodule QDSP.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:mox, "~> 0.3", only: [:dev, :test]},
 
+      # CSV parser
+      {:nimble_csv, "~> 1.2"},
+
       # Machine Learning
       {:nx, "~> 0.5"},
       {:bumblebee, "~> 0.3.0"},
-      {:exla, "~> 0.5"}
+      {:exla, "~> 0.5"},
+      {:openai, "~> 0.5.1"}
     ]
   end
 

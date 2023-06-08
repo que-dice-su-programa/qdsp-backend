@@ -14,6 +14,12 @@ defmodule QDSP.Application do
       {Phoenix.PubSub, name: QDSP.PubSub},
       # Start Finch
       {Finch, name: QDSP.Finch},
+      # ML model to build embeddings
+      {Nx.Serving,
+       serving: QDSP.Bot.Embeddings.serving(),
+       name: QDSP.Bot.EmbeddingsModel,
+       batch_size: 8,
+       batch_timeout: 100},
       # Start the Endpoint (http/https)
       QDSPWeb.Endpoint
       # Start a worker by calling: QDSP.Worker.start_link(arg)
