@@ -12,6 +12,7 @@ config :qdsp,
 
 # Configures the endpoint
 config :qdsp, QDSPWeb.Endpoint,
+  server: true,
   url: [host: "localhost"],
   render_errors: [
     formats: [json: QDSPWeb.ErrorJSON],
