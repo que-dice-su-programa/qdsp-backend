@@ -7,6 +7,8 @@ defmodule QDSPWeb.Router do
 
   scope "/api", QDSPWeb do
     pipe_through :api
+
+    post "/ask", AskController, :ask
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

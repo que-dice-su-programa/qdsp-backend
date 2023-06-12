@@ -80,7 +80,7 @@ defmodule QDSP.Bot do
       {_, ""} -> true
       _ -> false
     end)
-    |> Enum.into(%{})
+    |> Enum.into(%{}, fn {party, text} -> {party, %{result: text}} end)
     |> then(&{:ok, &1})
   end
 
