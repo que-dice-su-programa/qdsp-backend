@@ -1,48 +1,17 @@
 defmodule QDSP.Bot.Embeddings do
   @moduledoc """
-  This module is responsible for creating text embeddings.
+  This module is responsible for creating text embeddings using the configured adapter.
   """
-
-  @model "sentence-transformers/all-MiniLM-L6-v2"
-  @batch_size 100
-
-  @spec serving() :: Nx.Serving.t()
-  def serving() do
-    {:ok, %{model: model, params: params}} = Bumblebee.load_model({:hf, @model})
-    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, @model})
-    {_init_fn, predict_fn} = Axon.build(model, compiler: EXLA)
-
-    # credo:disable-for-lines:7 Credo.Check.Refactor.PipeChainStart
-    Nx.Serving.new(fn _opts ->
-      fn %{size: size} = inputs ->
-        inputs = Nx.Batch.pad(inputs, @batch_size - size)
-        predict_fn.(params, inputs)[:pooled_state]
-      end
-    end)
-    |> Nx.Serving.client_preprocessing(fn input ->
-      inputs =
-        Bumblebee.apply_tokenizer(tokenizer, input,
-          length: 128,
-          return_token_type_ids: false
-        )
-
-      {Nx.Batch.concatenate([inputs]), :ok}
-    end)
-  end
 
   @spec embed(String.t() | list(String.t())) :: {:ok, [float()] | list([float()])}
   def embed(texts) when is_list(texts) do
-    QDSP.Bot.EmbeddingsModel
-    |> Nx.Serving.batched_run(texts)
-    |> Nx.to_list()
-    |> then(&{:ok, &1})
+    embeddings_adapter().embed(texts)
   end
 
   def embed(text) do
-    QDSP.Bot.EmbeddingsModel
-    |> Nx.Serving.batched_run([text])
-    |> Nx.to_flat_list()
-    |> then(&{:ok, &1})
+    [text]
+    |> embed()
+    |> then(fn {:ok, [embedding]} -> {:ok, embedding} end)
   end
 
   # Uses cosine similarity to calculate the relatedness of two vectors
@@ -57,5 +26,9 @@ defmodule QDSP.Bot.Embeddings do
     else
       dot_product / (magnitude_a * magnitude_b)
     end
+  end
+
+  defp embeddings_adapter() do
+    Application.get_env(:qdsp, :embeddings_adapter)
   end
 end

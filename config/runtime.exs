@@ -17,6 +17,8 @@ import Config
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
 
+config :qdsp, embeddings_adapter: QDSP.Bot.Embeddings.OpenAi
+
 config :openai,
   api_key: System.get_env("OPENAI_API_KEY"),
   organization_key: System.get_env("OPENAI_ORGANIZATION_KEY"),

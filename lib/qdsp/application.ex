@@ -15,11 +15,6 @@ defmodule QDSP.Application do
       # Start Finch
       {Finch, name: QDSP.Finch},
       # ML model to build embeddings
-      {Nx.Serving,
-       serving: QDSP.Bot.Embeddings.serving(),
-       name: QDSP.Bot.EmbeddingsModel,
-       batch_size: 8,
-       batch_timeout: 100},
       # Start the Endpoint (http/https)
       QDSPWeb.Endpoint
       # Start a worker by calling: QDSP.Worker.start_link(arg)
@@ -30,6 +25,18 @@ defmodule QDSP.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: QDSP.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  def nx_serving() do
+    if Application.get_env(:qdsp, :embeddings_adapter) == QDSP.Bot.Embeddings.SentenceTransformers do
+      {Nx.Serving,
+       serving: QDSP.Bot.Embeddings.SentenceTransformers.serving(),
+       name: QDSP.Bot.Embeddings.Model,
+       batch_size: 8,
+       batch_timeout: 100}
+    else
+      nil
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

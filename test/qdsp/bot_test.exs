@@ -2,27 +2,15 @@ defmodule QDSP.BotTest do
   use ExUnit.Case, async: true
 
   alias QDSP.Bot
-  alias QDSP.Bot.Embeddings
 
   describe "assist/1" do
-    defp embed(chunks) do
-      Enum.map(chunks, fn text ->
-        {:ok, embedding} = Embeddings.embed(text)
-        {text, embedding}
-      end)
-    end
-
-    defp test_embeddings() do
-      %{
-        podemos:
-          embed([
-            "Los restaurantes no podrán servir paella para cenar",
-            "Todos los ciudadanos tendrán derecho a un perro",
-            "Prohibiremos la tortilla de patata sin cebolla",
-            "Los perros tendrán derecho a un ciudadano"
-          ])
-      }
-    end
+    @test_embeddings %{
+      podemos: [
+        {"Los restaurantes no podrán servir paella para cenar", [0, 0.1, -0.2]},
+        {"Prohibiremos la tortilla de patata sin cebolla", [0, 0.1, 0.2]},
+        {"Todos los ciudadanos tendrán derecho a un perro", [-0.8, 0.8, -0.7]}
+      ]
+    }
 
     test "uses openai to answer your questions" do
       QDSP.OpenAi.Mock
@@ -34,8 +22,8 @@ defmodule QDSP.BotTest do
                Pregunta:
                Qué propone cada partido sobre la tortilla de patata?
 
-               Responde por separado para cada partido de esta lista, usando
-               estrictamente este formato:
+               Responde brevemente, 280 characteres máximo (sin usar hashtags),
+               por separado para cada partido de esta lista, usando estrictamente este formato:
 
                podemos: ${podemos}
                """
@@ -54,8 +42,11 @@ defmodule QDSP.BotTest do
          podemos: prohibirá la tortilla de patata sin cebolla
          """}
       end)
+      |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
+        {:ok, [[0, 0.2, 0.2]]}
+      end)
 
-      assert Bot.assist("la tortilla de patata", test_embeddings(), sample_size: 1) ==
+      assert Bot.assist("la tortilla de patata", @test_embeddings, sample_size: 1) ==
                {:ok,
                 %{
                   podemos: "prohibirá la tortilla de patata sin cebolla"

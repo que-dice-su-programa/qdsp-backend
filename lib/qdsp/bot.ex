@@ -26,8 +26,8 @@ defmodule QDSP.Bot do
       Pregunta:
       Qué propone cada partido sobre #{question}?
 
-      Responde por separado para cada partido de esta lista, usando
-      estrictamente este formato:
+      Responde brevemente, 280 characteres máximo (sin usar hashtags),
+      por separado para cada partido de esta lista, usando estrictamente este formato:
 
       podemos: ${podemos}
       """,

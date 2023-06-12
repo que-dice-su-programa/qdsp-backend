@@ -28,6 +28,29 @@ defmodule QDSP.OpenAi.Client do
     |> parse_completion()
   end
 
+  @impl true
+  def embeddings(input, api \\ OpenAI) do
+    [
+      model: "text-embedding-ada-002",
+      input: input
+    ]
+    |> api.embeddings()
+    |> parse_embeddings()
+  end
+
+  defp parse_embeddings({:ok, %{data: embeddings}}) do
+    embeddings |> Enum.map(& &1["embedding"]) |> then(&{:ok, &1})
+  end
+
+  defp parse_embeddings({:error, error}) do
+    Logger.error("Error on OpenAI embeddings: #{inspect(error)}",
+      grouping_title: "Error on OpenAI embeddings",
+      extra_info: %{error: error}
+    )
+
+    {:error, "Something went wrong"}
+  end
+
   defp parse_completion({:ok, response}) do
     choice = response.choices |> Enum.find(&(&1["finish_reason"] == "stop"))
 
