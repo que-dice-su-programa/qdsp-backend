@@ -27,7 +27,6 @@ defmodule QDSP.Bot do
         {party, context_for_party(question, party, embeddings, sample_size)}
       end)
       |> Enum.into(%{})
-      |> IO.inspect()
 
     open_ai().chat_completion(
       """
@@ -43,8 +42,7 @@ defmodule QDSP.Bot do
       por separado para cada partido de esta lista, usando estrictamente este formato:
 
       #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
-      """
-      |> IO.inspect(),
+      """,
       instructions: """
       Eres un analista político totalmente imparcial, especializado en
       comparar programas electorales. La información de los programas
