@@ -6,31 +6,45 @@ defmodule QDSP.Bot do
   alias QDSP.Bot.{Embeddings, Parser}
   alias QDSP.OpenAi
 
+  @parties [:sumar, :vox, :pp, :bildu]
   @embeddings %{
-    podemos: "priv/embeddings/podemos.csv" |> File.read!() |> Parser.parse()
+    sumar: "priv/embeddings/sumar.csv" |> File.read!() |> Parser.parse(),
+    # psoe: "priv/embeddings/psoe.csv" |> File.read!() |> Parser.parse(),
+    vox: "priv/embeddings/vox.csv" |> File.read!() |> Parser.parse(),
+    pp: "priv/embeddings/pp.csv" |> File.read!() |> Parser.parse(),
+    bildu: "priv/embeddings/bildu.csv" |> File.read!() |> Parser.parse()
+    # erc: "priv/embeddings/erc.csv" |> File.read!() |> Parser.parse(),
+    # junts: "priv/embeddings/junts.csv" |> File.read!() |> Parser.parse()
   }
 
   @spec assist(String.t(), map(), keyword()) :: {:ok, String.t()} | {:error, any()}
   def assist(question, embeddings \\ @embeddings, opts \\ []) do
     sample_size = Keyword.get(opts, :sample_size, 2)
 
-    context = %{
-      podemos: context_for_party(question, :podemos, embeddings, sample_size)
-    }
+    context =
+      @parties
+      |> Enum.map(fn party ->
+        {party, context_for_party(question, party, embeddings, sample_size)}
+      end)
+      |> Enum.into(%{})
+      |> IO.inspect()
 
     open_ai().chat_completion(
       """
-      Esto es lo que dice cada partido en su programa electoral sobre este tema:
-      podemos: #{context.podemos}
+      Esto es lo que dice cada partido en su programa electoral para las elecciones
+      generales del estado español sobre este tema:
+
+      #{@parties |> Enum.map(fn party -> "#{party}: #{context[party]}" end) |> Enum.join("\n")}
 
       Pregunta:
       Qué propone cada partido sobre #{question}?
 
-      Responde brevemente, 280 characteres máximo (sin usar hashtags),
+      Responde brevemente, 350 characteres aprox,
       por separado para cada partido de esta lista, usando estrictamente este formato:
 
-      podemos: ${podemos}
-      """,
+      #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
+      """
+      |> IO.inspect(),
       instructions: """
       Eres un analista político totalmente imparcial, especializado en
       comparar programas electorales. La información de los programas
@@ -62,11 +76,6 @@ defmodule QDSP.Bot do
   end
 
   defp parse_response({:ok, response}) do
-    # parse the response:k
-    # podemos: prohibirá la tortilla de patata sin cebolla
-    #
-    # into a map
-
     response
     |> String.split("\n")
     |> Enum.map(fn line ->

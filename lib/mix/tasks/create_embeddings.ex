@@ -7,21 +7,26 @@ defmodule Mix.Tasks.CreateEmbeddings do
   def run(args) do
     Mix.Task.run("app.start")
 
-    IO.puts("Creating embeddings for Podemos")
-    # read priv/programas/programas.txt
-    paragraphs = parse(:podemos)
+    [:sumar, :psoe, :vox, :pp, :bildu, :erc, :junts]
+    |> Enum.each(fn party -> create_embeddings_for(party, args) end)
+  end
+
+  defp create_embeddings_for(party, args) do
+    IO.puts("Creating embeddings for #{party}")
+    paragraphs = parse(party)
 
     IO.puts("-> Processing #{length(paragraphs)} paragraphs")
 
     embeddings = create_embeddings(paragraphs, args)
 
-    write(:podemos, paragraphs, embeddings)
+    write(party, paragraphs, embeddings)
   end
 
   defp parse(party) do
     "priv/programas/#{party}.txt"
     |> File.read!()
     |> String.replace(" -\n", "")
+    |> String.replace("-\n", "")
     |> String.replace("  ", " ")
     |> String.replace("- ", "")
     |> String.replace(" \n", " ")
