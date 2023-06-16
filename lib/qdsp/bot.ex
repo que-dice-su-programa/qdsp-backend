@@ -21,56 +21,56 @@ defmodule QDSP.Bot do
   def assist(question, embeddings \\ @embeddings, opts \\ []) do
     sample_size = Keyword.get(opts, :sample_size, 2)
 
-    context =
-      @parties
-      |> Enum.map(fn party ->
-        {party, context_for_party(question, party, embeddings, sample_size)}
-      end)
-      |> Enum.into(%{})
+    with {:ok, question_embedding} <- Embeddings.embed(question) do
+      context =
+        @parties
+        |> Enum.map(fn party ->
+          {party, context_for_party(party, embeddings, sample_size, question_embedding)}
+        end)
+        |> Enum.into(%{})
 
-    open_ai().chat_completion(
-      """
-      Esto es lo que dice cada partido en su programa electoral para las elecciones
-      generales del estado español sobre este tema:
+      open_ai().chat_completion(
+        """
+        Esto es lo que dice cada partido en su programa electoral para las elecciones
+        generales del estado español sobre este tema:
 
-      #{@parties |> Enum.map(fn party -> "#{party}: #{context[party]}" end) |> Enum.join("\n")}
+        #{@parties |> Enum.map(fn party -> "#{party}: #{context[party]}" end) |> Enum.join("\n")}
 
-      Pregunta:
-      Qué propone cada partido sobre #{question}?
+        Pregunta:
+        Qué propone cada partido sobre #{question}?
 
-      Responde brevemente, 350 characteres aprox,
-      por separado para cada partido de esta lista, usando estrictamente este formato:
+        Responde brevemente, 350 characteres aprox,
+        por separado para cada partido de esta lista, usando estrictamente este formato:
 
-      #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
-      """,
-      instructions: """
-      Eres un analista político totalmente imparcial, especializado en
-      comparar programas electorales. La información de los programas
-      electorales tiene prioridad. No respondes preguntas sobre temas
-      no relacionados con los programas electorales. Si alguien pregunta
-      algo no relacionado, simplemente respondes "No lo sé, pero soy un 🤖,
-      prueba a formular la pregunta de otra manera.".
-      """
-    )
-    |> parse_response()
+        #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
+        """,
+        instructions: """
+        Eres un analista político totalmente imparcial, especializado en
+        comparar programas electorales. La información de los programas
+        electorales tiene prioridad. No respondes preguntas sobre temas
+        no relacionados con los programas electorales. Si alguien pregunta
+        algo no relacionado, simplemente respondes "No lo sé, pero soy un 🤖,
+        prueba a formular la pregunta de otra manera.".
+        """
+      )
+      |> parse_response()
+    end
   end
 
-  defp context_for_party(question, party, embeddings, sample_size) do
-    question
-    |> strings_ranked_by_relatedness(embeddings[party], sample_size)
+  defp context_for_party(party, embeddings, sample_size, question_embedding) do
+    embeddings[party]
+    |> strings_ranked_by_relatedness(sample_size, question_embedding)
     |> Enum.join(". ")
   end
 
-  defp strings_ranked_by_relatedness(question, embeddings, top_n) do
-    with {:ok, question_embedding} <- Embeddings.embed(question) do
-      embeddings
-      |> Enum.map(fn {text, embedding} ->
-        {text, Embeddings.relatedness(question_embedding, embedding)}
-      end)
-      |> Enum.sort(fn {_, a}, {_, b} -> a > b end)
-      |> Enum.take(top_n)
-      |> Enum.map(fn {text, _} -> text end)
-    end
+  defp strings_ranked_by_relatedness(embeddings, top_n, question_embedding) do
+    embeddings
+    |> Enum.map(fn {text, embedding} ->
+      {text, Embeddings.relatedness(question_embedding, embedding)}
+    end)
+    |> Enum.sort(fn {_, a}, {_, b} -> a > b end)
+    |> Enum.take(top_n)
+    |> Enum.map(fn {text, _} -> text end)
   end
 
   defp parse_response({:ok, response}) do

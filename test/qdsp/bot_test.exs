@@ -5,10 +5,19 @@ defmodule QDSP.BotTest do
 
   describe "assist/1" do
     @test_embeddings %{
-      podemos: [
+      sumar: [
         {"Los restaurantes no podrán servir paella para cenar", [0, 0.1, -0.2]},
         {"Prohibiremos la tortilla de patata sin cebolla", [0, 0.1, 0.2]},
         {"Todos los ciudadanos tendrán derecho a un perro", [-0.8, 0.8, -0.7]}
+      ],
+      vox: [
+        {"La tortilla de patata se llamará tortilla española", [0, 0.1, -0.2]}
+      ],
+      pp: [
+        {"La tortilla de patata es gallega", [0, 0.1, -0.2]}
+      ],
+      bildu: [
+        {"La tortilla de patata es vasca", [0, 0.1, -0.2]}
       ]
     }
 
@@ -16,16 +25,24 @@ defmodule QDSP.BotTest do
       QDSP.OpenAi.Mock
       |> Mox.expect(:chat_completion, fn prompt, [instructions: instructions] ->
         assert prompt == """
-               Esto es lo que dice cada partido en su programa electoral sobre este tema:
-               podemos: Prohibiremos la tortilla de patata sin cebolla
+               Esto es lo que dice cada partido en su programa electoral para las elecciones
+               generales del estado español sobre este tema:
+
+               sumar: Prohibiremos la tortilla de patata sin cebolla
+               vox: La tortilla de patata se llamará tortilla española
+               pp: La tortilla de patata es gallega
+               bildu: La tortilla de patata es vasca
 
                Pregunta:
                Qué propone cada partido sobre la tortilla de patata?
 
-               Responde brevemente, 280 characteres máximo (sin usar hashtags),
+               Responde brevemente, 350 characteres aprox,
                por separado para cada partido de esta lista, usando estrictamente este formato:
 
-               podemos: ${podemos}
+               sumar: ${sumar}
+               vox: ${vox}
+               pp: ${pp}
+               bildu: ${bildu}
                """
 
         assert instructions == """
@@ -39,7 +56,10 @@ defmodule QDSP.BotTest do
 
         {:ok,
          """
-         podemos: prohibirá la tortilla de patata sin cebolla
+         sumar: prohibirá la tortilla de patata sin cebolla
+         vox: renombrará la tortilla de patata como tortilla española
+         pp: oficializará la tortilla de patata como gallega
+         bildu: oficializará la tortilla de patata como vasca
          """}
       end)
       |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
@@ -49,7 +69,10 @@ defmodule QDSP.BotTest do
       assert Bot.assist("la tortilla de patata", @test_embeddings, sample_size: 1) ==
                {:ok,
                 %{
-                  podemos: %{result: "prohibirá la tortilla de patata sin cebolla"}
+                  sumar: %{result: "prohibirá la tortilla de patata sin cebolla"},
+                  vox: %{result: "renombrará la tortilla de patata como tortilla española"},
+                  pp: %{result: "oficializará la tortilla de patata como gallega"},
+                  bildu: %{result: "oficializará la tortilla de patata como vasca"}
                 }}
     end
   end

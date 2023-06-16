@@ -43,6 +43,8 @@ defmodule QDSP.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:mox, "~> 0.3", only: [:dev, :test]},
       {:progress_bar, "~> 2.0"},
+      {:hammer, "~> 6.1"},
+      {:hammer_plug, "~> 3.0"},
 
       # CSV parser
       {:nimble_csv, "~> 1.2"},

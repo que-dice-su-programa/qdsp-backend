@@ -32,6 +32,8 @@ defmodule QDSPWeb.ConnCase do
   end
 
   setup _tags do
+    :ets.delete_all_objects(:hammer_ets_buckets)
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
