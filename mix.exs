@@ -51,7 +51,10 @@ defmodule QDSP.MixProject do
       {:csv, "~> 3.0"},
 
       # Machine Learning
-      {:openai, "~> 0.5.1"}
+      {:openai, "~> 0.5.1"},
+
+      # Cache
+      {:cachex, "~> 3.6"}
     ]
   end
 

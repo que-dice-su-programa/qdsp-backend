@@ -14,6 +14,8 @@ defmodule QDSP.Application do
       {Phoenix.PubSub, name: QDSP.PubSub},
       # Start Finch
       {Finch, name: QDSP.Finch},
+      # Cache
+      {Cachex, name: :question_cache},
       # ML model to build embeddings
       # Start the Endpoint (http/https)
       QDSPWeb.Endpoint

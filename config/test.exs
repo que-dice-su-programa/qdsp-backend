@@ -21,3 +21,5 @@ config :phoenix, :plug_init_mode, :runtime
 
 config :qdsp,
   open_ai: [client: QDSP.OpenAi.Mock]
+
+config :qdsp, cache_enabled: false
