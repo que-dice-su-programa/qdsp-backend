@@ -34,8 +34,7 @@ defmodule Mix.Tasks.CreateEmbeddings do
   end
 
   @batch_size %{
-    Embeddings.OpenAi => 100,
-    Embeddings.SentenceTransformers => 8
+    Embeddings.OpenAi => 100
   }
 
   defp create_embeddings(paragraphs, args) do
@@ -52,8 +51,7 @@ defmodule Mix.Tasks.CreateEmbeddings do
   end
 
   @embedding_implementations %{
-    "openai" => Embeddings.OpenAi,
-    "sentence-transformers" => Embeddings.SentenceTransformers
+    "openai" => Embeddings.OpenAi
   }
   defp embeddings_impl(args) do
     {[embeddings: impl], _, _} = OptionParser.parse(args, strict: [embeddings: :string])

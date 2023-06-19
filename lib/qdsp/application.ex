@@ -27,18 +27,6 @@ defmodule QDSP.Application do
     Supervisor.start_link(children, opts)
   end
 
-  def nx_serving() do
-    if Application.get_env(:qdsp, :embeddings_adapter) == QDSP.Bot.Embeddings.SentenceTransformers do
-      {Nx.Serving,
-       serving: QDSP.Bot.Embeddings.SentenceTransformers.serving(),
-       name: QDSP.Bot.Embeddings.Model,
-       batch_size: 8,
-       batch_timeout: 100}
-    else
-      nil
-    end
-  end
-
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   @impl true

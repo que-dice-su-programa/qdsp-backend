@@ -51,9 +51,6 @@ defmodule QDSP.MixProject do
       {:csv, "~> 3.0"},
 
       # Machine Learning
-      {:nx, "~> 0.5"},
-      {:bumblebee, "~> 0.3.0"},
-      {:exla, "~> 0.5"},
       {:openai, "~> 0.5.1"}
     ]
   end
