@@ -25,10 +25,10 @@ defmodule QDSPWeb.AskControllerTest do
 
     test "caches answers when it's configured", %{conn: conn} do
       Application.put_env(:qdsp, :cache_enabled, true)
-    after
-      fn ->
+
+      on_exit(fn ->
         Application.put_env(:qdsp, :cache_enabled, false)
-      end
+      end)
 
       QDSP.OpenAi.Mock
       |> Mox.expect(:chat_completion, fn _, _ ->
