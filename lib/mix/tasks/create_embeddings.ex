@@ -7,7 +7,7 @@ defmodule Mix.Tasks.CreateEmbeddings do
   def run(args) do
     Mix.Task.run("app.start")
 
-    [:sumar, :psoe, :vox, :pp, :bildu, :erc, :junts]
+    [:sumar, :psoe, :vox, :pp, :bildu, :erc, :junts, :pnv]
     |> Enum.each(fn party -> create_embeddings_for(party, args) end)
   end
 

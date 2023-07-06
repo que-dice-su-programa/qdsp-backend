@@ -6,10 +6,10 @@ defmodule QDSP.Bot do
   alias QDSP.Bot.{Embeddings, Parser}
   alias QDSP.OpenAi
 
-  @parties [:sumar, :vox, :pp, :bildu]
+  @parties [:sumar, :vox, :pp, :bildu, :psoe]
   @embeddings %{
     sumar: "priv/embeddings/sumar.csv" |> File.read!() |> Parser.parse(),
-    # psoe: "priv/embeddings/psoe.csv" |> File.read!() |> Parser.parse(),
+    psoe: "priv/embeddings/psoe.csv" |> File.read!() |> Parser.parse(),
     vox: "priv/embeddings/vox.csv" |> File.read!() |> Parser.parse(),
     pp: "priv/embeddings/pp.csv" |> File.read!() |> Parser.parse(),
     bildu: "priv/embeddings/bildu.csv" |> File.read!() |> Parser.parse()

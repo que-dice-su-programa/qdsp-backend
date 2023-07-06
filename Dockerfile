@@ -1,5 +1,5 @@
 # ---- Build Stage ----
-FROM elixir:1.14 AS builder
+FROM elixir:1.15 AS builder
 
 # Set environment variables for building the application
 ENV MIX_ENV=prod \
@@ -26,7 +26,7 @@ RUN mix deps.compile
 RUN mix release
 
 # ---- Application Stage ----
-FROM elixir:1.14 AS runtime
+FROM elixir:1.15 AS runtime
 
 ENV LANG=C.UTF-8
 
