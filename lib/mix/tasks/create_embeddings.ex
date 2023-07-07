@@ -7,7 +7,7 @@ defmodule Mix.Tasks.CreateEmbeddings do
   def run(args) do
     Mix.Task.run("app.start")
 
-    [:sumar, :psoe, :vox, :pp, :bildu, :erc, :junts, :pnv]
+    [:sumar, :psoe, :vox, :pp]
     |> Enum.each(fn party -> create_embeddings_for(party, args) end)
   end
 
@@ -25,12 +25,40 @@ defmodule Mix.Tasks.CreateEmbeddings do
   defp parse(party) do
     "priv/programas/#{party}.txt"
     |> File.read!()
+    |> remove_line_breaks_except_periods()
     |> String.replace(" -\n", "")
     |> String.replace("-\n", "")
     |> String.replace("  ", " ")
     |> String.replace("- ", "")
     |> String.replace(" \n", " ")
     |> String.split("\n", trim: true)
+    |> Enum.flat_map(fn p ->
+      ensure_manageable_size(p)
+    end)
+  end
+
+  defp remove_line_breaks_except_periods(text) do
+    pattern = ~r/(?<!\.)\n/
+    cleaned_text = Regex.replace(pattern, text, " ")
+    cleaned_text
+  end
+
+  defp ensure_manageable_size(paragraph) do
+    paragraph |> String.length()
+
+    if String.length(paragraph) > 3000 do
+      paragraph
+      |> split_in_half()
+      |> Enum.flat_map(fn chunk -> ensure_manageable_size(chunk) end)
+    else
+      [paragraph]
+    end
+  end
+
+  def split_in_half(string) do
+    length = String.length(string)
+    midpoint = div(length, 2)
+    [String.slice(string, 0, midpoint), String.slice(string, midpoint, length)]
   end
 
   @batch_size %{

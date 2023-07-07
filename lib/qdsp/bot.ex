@@ -16,7 +16,7 @@ defmodule QDSP.Bot do
 
   @spec assist(String.t(), map(), keyword()) :: {:ok, String.t()} | {:error, any()}
   def assist(question, embeddings \\ @embeddings, opts \\ []) do
-    sample_size = Keyword.get(opts, :sample_size, 2)
+    sample_size = Keyword.get(opts, :sample_size, 1)
 
     with {:ok, question_embedding} <- Embeddings.embed(question) do
       context =
