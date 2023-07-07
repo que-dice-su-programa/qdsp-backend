@@ -16,7 +16,7 @@ defmodule QDSP.BotTest do
       pp: [
         {"La tortilla de patata es gallega", [0, 0.1, -0.2]}
       ],
-      bildu: [
+      psoe: [
         {"La tortilla de patata es vasca", [0, 0.1, -0.2]}
       ]
     }
@@ -29,9 +29,9 @@ defmodule QDSP.BotTest do
                generales del estado español sobre este tema:
 
                sumar: Prohibiremos la tortilla de patata sin cebolla
+               psoe: La tortilla de patata es vasca
                vox: La tortilla de patata se llamará tortilla española
                pp: La tortilla de patata es gallega
-               bildu: La tortilla de patata es vasca
 
                Pregunta:
                Qué propone cada partido sobre la tortilla de patata?
@@ -40,9 +40,9 @@ defmodule QDSP.BotTest do
                por separado para cada partido de esta lista, usando estrictamente este formato:
 
                sumar: ${sumar}
+               psoe: ${psoe}
                vox: ${vox}
                pp: ${pp}
-               bildu: ${bildu}
                """
 
         assert instructions == """
@@ -57,9 +57,9 @@ defmodule QDSP.BotTest do
         {:ok,
          """
          sumar: prohibirá la tortilla de patata sin cebolla
+         psoe: oficializará la tortilla de patata como vasca
          vox: renombrará la tortilla de patata como tortilla española
          pp: oficializará la tortilla de patata como gallega
-         bildu: oficializará la tortilla de patata como vasca
          """}
       end)
       |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
@@ -70,9 +70,9 @@ defmodule QDSP.BotTest do
                {:ok,
                 %{
                   sumar: %{result: "prohibirá la tortilla de patata sin cebolla"},
+                  psoe: %{result: "oficializará la tortilla de patata como vasca"},
                   vox: %{result: "renombrará la tortilla de patata como tortilla española"},
-                  pp: %{result: "oficializará la tortilla de patata como gallega"},
-                  bildu: %{result: "oficializará la tortilla de patata como vasca"}
+                  pp: %{result: "oficializará la tortilla de patata como gallega"}
                 }}
     end
   end
