@@ -53,5 +53,15 @@ defmodule QDSPWeb.AskControllerTest do
 
       assert conn.status == 200
     end
+
+    test "retuns error when query is longer than 60 chars", %{conn: conn} do
+      conn =
+        post(conn, ~p"/api/ask", %{
+          q:
+            "esta es una pregunta largaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        })
+
+      assert json_response(conn, 400)
+    end
   end
 end
