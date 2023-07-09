@@ -26,7 +26,7 @@ defmodule QDSP.Bot do
         Esto es lo que dice cada partido en su programa electoral para las elecciones
         generales del estado español sobre este tema:
 
-        #{@parties |> Enum.map(fn party -> "#{party}: #{context[party]}" end) |> Enum.join("\n")}
+        #{@parties |> Enum.map(fn party -> "#{party}: #{context[party] |> Enum.join(". ")}" end) |> Enum.join("\n")}
 
         Pregunta:
         Qué propone cada partido sobre #{question}?
@@ -45,14 +45,13 @@ defmodule QDSP.Bot do
         prueba a formular la pregunta de otra manera.".
         """
       )
-      |> parse_response()
+      |> parse_response(context)
     end
   end
 
   defp context_for_party(party, embeddings, sample_size, question_embedding) do
     embeddings[party]
     |> strings_ranked_by_relatedness(sample_size, question_embedding)
-    |> Enum.join(". ")
   end
 
   defp strings_ranked_by_relatedness(embeddings, top_n, question_embedding) do
@@ -65,7 +64,7 @@ defmodule QDSP.Bot do
     |> Enum.map(fn {text, _} -> text end)
   end
 
-  defp parse_response({:ok, response}) do
+  defp parse_response({:ok, response}, context) do
     response
     |> String.split("\n")
     |> Enum.map(fn line ->
@@ -79,7 +78,9 @@ defmodule QDSP.Bot do
       {_, ""} -> true
       _ -> false
     end)
-    |> Enum.into(%{}, fn {party, text} -> {party, %{result: text}} end)
+    |> Enum.into(%{}, fn {party, text} ->
+      {party, %{result: text, context: context[party]}}
+    end)
     |> then(&{:ok, &1})
   end
 
