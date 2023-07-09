@@ -3,20 +3,15 @@ defmodule QDSP.Bot do
   Bot is a module that will help you with your questions about sketchq
   """
 
-  alias QDSP.Bot.{Embeddings, Parser}
+  alias QDSP.Bot.Embeddings
   alias QDSP.OpenAi
 
   @parties [:sumar, :psoe, :vox, :pp]
-  @embeddings %{
-    sumar: "priv/embeddings/sumar.csv" |> File.read!() |> Parser.parse(),
-    psoe: "priv/embeddings/psoe.csv" |> File.read!() |> Parser.parse(),
-    vox: "priv/embeddings/vox.csv" |> File.read!() |> Parser.parse(),
-    pp: "priv/embeddings/pp.csv" |> File.read!() |> Parser.parse()
-  }
 
-  @spec assist(String.t(), map(), keyword()) :: {:ok, String.t()} | {:error, any()}
-  def assist(question, embeddings \\ @embeddings, opts \\ []) do
+  @spec assist(String.t(), keyword()) :: {:ok, String.t()} | {:error, any()}
+  def assist(question, opts \\ []) do
     sample_size = Keyword.get(opts, :sample_size, 1)
+    embeddings = Keyword.get(opts, :embeddings, QDSP.Bot.Index.get())
 
     with {:ok, question_embedding} <- Embeddings.embed(question) do
       context =
