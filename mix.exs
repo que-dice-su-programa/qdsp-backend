@@ -45,6 +45,7 @@ defmodule QDSP.MixProject do
       {:progress_bar, "~> 2.0"},
       {:hammer, "~> 6.1"},
       {:hammer_plug, "~> 3.0"},
+      {:cors_plug, "~> 3.0"},
 
       # CSV parser
       {:nimble_csv, "~> 1.2"},
