@@ -69,10 +69,30 @@ defmodule QDSP.BotTest do
       assert Bot.assist("la tortilla de patata", embeddings: @test_embeddings, sample_size: 1) ==
                {:ok,
                 %{
-                  sumar: %{result: "prohibirá la tortilla de patata sin cebolla"},
-                  psoe: %{result: "oficializará la tortilla de patata como vasca"},
-                  vox: %{result: "renombrará la tortilla de patata como tortilla española"},
-                  pp: %{result: "oficializará la tortilla de patata como gallega"}
+                  sumar: %{
+                    result: "prohibirá la tortilla de patata sin cebolla",
+                    context: [
+                      "Prohibiremos la tortilla de patata sin cebolla"
+                    ]
+                  },
+                  psoe: %{
+                    result: "oficializará la tortilla de patata como vasca",
+                    context: [
+                      "La tortilla de patata es vasca"
+                    ]
+                  },
+                  vox: %{
+                    result: "renombrará la tortilla de patata como tortilla española",
+                    context: [
+                      "La tortilla de patata se llamará tortilla española"
+                    ]
+                  },
+                  pp: %{
+                    result: "oficializará la tortilla de patata como gallega",
+                    context: [
+                      "La tortilla de patata es gallega"
+                    ]
+                  }
                 }}
     end
   end
