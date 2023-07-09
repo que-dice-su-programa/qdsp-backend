@@ -32,5 +32,6 @@ ENV LANG=C.UTF-8
 
 # Copy over the build artifact from the previous step
 COPY --from=builder /app/_build .
+COPY priv/embeddings ./priv/embeddings
 
 CMD ["./prod/rel/qdsp/bin/qdsp", "start"]

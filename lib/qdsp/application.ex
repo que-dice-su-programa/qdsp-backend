@@ -16,7 +16,7 @@ defmodule QDSP.Application do
       {Finch, name: QDSP.Finch},
       # Cache
       {Cachex, name: :question_cache},
-      # ML model to build embeddings
+      {QDSP.Bot.Index, name: QDSP.Bot.Index},
       # Start the Endpoint (http/https)
       QDSPWeb.Endpoint
       # Start a worker by calling: QDSP.Worker.start_link(arg)

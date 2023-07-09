@@ -66,7 +66,7 @@ defmodule QDSP.BotTest do
         {:ok, [[0, 0.2, 0.2]]}
       end)
 
-      assert Bot.assist("la tortilla de patata", @test_embeddings, sample_size: 1) ==
+      assert Bot.assist("la tortilla de patata", embeddings: @test_embeddings, sample_size: 1) ==
                {:ok,
                 %{
                   sumar: %{result: "prohibirá la tortilla de patata sin cebolla"},
