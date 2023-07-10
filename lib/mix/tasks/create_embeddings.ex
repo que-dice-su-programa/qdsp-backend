@@ -46,7 +46,7 @@ defmodule Mix.Tasks.CreateEmbeddings do
   defp ensure_manageable_size(paragraph) do
     paragraph |> String.length()
 
-    if String.length(paragraph) > 3000 do
+    if String.length(paragraph) > 1000 do
       paragraph
       |> split_in_half()
       |> Enum.flat_map(fn chunk -> ensure_manageable_size(chunk) end)
