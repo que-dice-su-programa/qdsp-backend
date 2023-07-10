@@ -25,22 +25,8 @@ defmodule Mix.Tasks.CreateEmbeddings do
   defp parse(party) do
     "priv/programas/#{party}.txt"
     |> File.read!()
-    |> remove_line_breaks_except_periods()
-    |> String.replace(" -\n", "")
-    |> String.replace("-\n", "")
-    |> String.replace("  ", " ")
-    |> String.replace("- ", "")
-    |> String.replace(" \n", " ")
     |> String.split("\n", trim: true)
-    |> Enum.flat_map(fn p ->
-      ensure_manageable_size(p)
-    end)
-  end
-
-  defp remove_line_breaks_except_periods(text) do
-    pattern = ~r/(?<!\.)\n/
-    cleaned_text = Regex.replace(pattern, text, " ")
-    cleaned_text
+    |> Enum.flat_map(&ensure_manageable_size/1)
   end
 
   defp ensure_manageable_size(paragraph) do
