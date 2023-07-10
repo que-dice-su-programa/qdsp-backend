@@ -11,6 +11,11 @@ defmodule QDSPWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  plug Plug.Static,
+    at: "/",
+    from: :qdsp,
+    gzip: false
+
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   plug Hammer.Plug,
@@ -49,5 +54,7 @@ defmodule QDSPWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug CORSPlug, origin: "https://quedicesuprograma.es"
+
+
   plug QDSPWeb.Router
 end
