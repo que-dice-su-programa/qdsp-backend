@@ -4863,7 +4863,7 @@ Ley 27 /2022, proponemos profundizar en el desarrollo de la evaluación de los r
 sector público con un diseño institucional adecuado a partir de una agencia de evaluación de 
 políticas públicas capaz de impulsar un trabajo que no solo genere aprendizaje interno, sino 
 que, de cara al exterior, favorezca la rendición de cuentas y la legitimidad de las intervenciones 
-públicas.1176. Liderazgo: politización y función directiva profesional. La transformación de la Administración 
+públicas. Liderazgo: politización y función directiva profesional. La transformación de la Administración 
 no es sencilla y requiere de un fuerte compromiso por parte tanto del liderazgo político como de la 
 función directiva profesional. Un liderazgo también renovado, pero fuertemente comprometido con 
 los propósitos de cambiar las dinámicas de funcionamiento de las instituciones públicas.
@@ -7371,7 +7371,7 @@ que crear repositorios y espacios documentales para facilitar el acceso a estos 
 lizar actuaciones de promoción y divulgación sobre los usos y beneficios de las licencias libres. De 
 acuerdo con esto, también haremos una evaluación de los contratos de externalización de los servi-
 cios informáticos, potenciando el uso de software libre. 
- 177Promoveremos la creación por parte de los organismos del Estado (CENATIC) de una base de datos 
+ Promoveremos la creación por parte de los organismos del Estado (CENATIC) de una base de datos 
 donde la ciudadanía pueda consultar y acceder a las aplicaciones y herramientas de software libre 
 disponibles y actualizadas. 
  
@@ -7418,7 +7418,7 @@ gica. Es importante, además, que se trate de una innovación sostenible y respe
 chos de las personas trabajadoras. 
 Se busca impulsar un modelo de economía digital cooperativo, social, solidario y feminista que 
 garantice la democracia económica y la capacidad colectiva en el ámbito de la planificación des-
-de el que se fomente el cooperativismo de plataforma y se apoye el desarrollo de tecnologías de 178plataforma de código abierto en colaboración con otras Administraciones. La creación de redes de 
+de el que se fomente el cooperativismo de plataforma y se apoye el desarrollo de tecnologías de plataforma de código abierto en colaboración con otras Administraciones. La creación de redes de 
 laboratorios público-comunitarios ligadas al sector privado también es una estrategia clave para 
 impulsar la innovación y el desarrollo en diferentes ámbitos.
 6. Promoción de una política tecnológica libre y descentralizada. Consideramos el despliegue de 
@@ -7466,7 +7466,7 @@ importante fomentar la digitalización programada para reducir las emisiones de 
 vernadero. Esto se puede lograr mediante la elección de bases de datos y softwares más eficientes 
 en términos de consumo energético, así como mediante la optimización de los procesos digitales 
 para reducir su impacto ambiental. Hay que promover la incorporación de este enfoque en las pau-
-tas de consumo.17910. Red de equipamientos para la inclusión digital. Es necesario fomentar el acompañamiento, la 
+tas de consumo. 10. Red de equipamientos para la inclusión digital. Es necesario fomentar el acompañamiento, la 
 formación y el logro de todas las competencias digitales necesarias para una plena ciudadanía. Para 
 eso, se deberían generar espacios de aprendizaje sobre competencias digitales específicas con 
 perspectiva de género, interseccional y atendiendo a la diversidad; promover espacios de aprendi-
@@ -7516,4 +7516,4 @@ lo que debería resultar en la desmercantilización de la creatividad. También 
 alianzas entre los países del sur de Europa para eliminar todas las cláusulas de los tratados comer -
 ciales que imponen el libre flujo de datos y evitar que fluyan hacia los imperios tecnológicos, lo que 
 permitiría que los centros locales puedan aprovecharlos. De esta manera, se promoverá la transfe-
-rencia de tecnología y se reducirá la dependencia de las grandes empresas tecnológicas.180
+rencia de tecnología y se reducirá la dependencia de las grandes empresas tecnológicas.
