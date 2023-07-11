@@ -10,7 +10,7 @@ defmodule QDSPWeb.AskControllerTest do
          podemos: prohibirá la tortilla de patata sin cebolla
          """}
       end)
-      |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
+      |> Mox.expect(:embeddings, fn ["medidas y propuestas sobre la tortilla de patata"] ->
         {:ok, [[0, 0.2, 0.2]]}
       end)
 
@@ -18,7 +18,8 @@ defmodule QDSPWeb.AskControllerTest do
 
       assert json_response(conn, 200) == %{
                "podemos" => %{
-                 "result" => "prohibirá la tortilla de patata sin cebolla"
+                 "result" => "prohibirá la tortilla de patata sin cebolla",
+                 "context" => nil
                }
              }
     end
@@ -37,7 +38,7 @@ defmodule QDSPWeb.AskControllerTest do
          podemos: prohibirá la tortilla de patata sin cebolla
          """}
       end)
-      |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
+      |> Mox.expect(:embeddings, fn ["medidas y propuestas sobre la tortilla de patata"] ->
         {:ok, [[0, 0.2, 0.2]]}
       end)
 
@@ -45,7 +46,8 @@ defmodule QDSPWeb.AskControllerTest do
 
       assert json_response(conn, 200) == %{
                "podemos" => %{
-                 "result" => "prohibirá la tortilla de patata sin cebolla"
+                 "result" => "prohibirá la tortilla de patata sin cebolla",
+                 "context" => nil
                }
              }
 

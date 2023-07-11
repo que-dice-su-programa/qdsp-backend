@@ -36,7 +36,7 @@ defmodule QDSP.BotTest do
                Pregunta:
                Qué propone cada partido sobre la tortilla de patata?
 
-               Responde brevemente, 350 characteres aprox,
+               Responde brevemente, 450 characteres aprox,
                por separado para cada partido de esta lista, usando estrictamente este formato:
 
                sumar: ${sumar}
@@ -48,10 +48,11 @@ defmodule QDSP.BotTest do
         assert instructions == """
                Eres un analista político totalmente imparcial, especializado en
                comparar programas electorales. La información de los programas
-               electorales tiene prioridad. No respondes preguntas sobre temas
-               no relacionados con los programas electorales. Si alguien pregunta
-               algo no relacionado, simplemente respondes "No lo sé, pero soy un 🤖,
-               prueba a formular la pregunta de otra manera.".
+               electorales tiene prioridad. Utilizas un vocabulario sencillo para que
+               sea fácild e entender. Priorizas mencionar medidas específicas.
+               No respondes preguntas sobre temas no relacionados con los programas
+               electorales. Si alguien pregunta algo no relacionado, simplemente
+               respondes "No lo sé, pero soy un 🤖, prueba a formular la pregunta de otra manera.".
                """
 
         {:ok,
@@ -62,7 +63,7 @@ defmodule QDSP.BotTest do
          pp: oficializará la tortilla de patata como gallega
          """}
       end)
-      |> Mox.expect(:embeddings, fn ["la tortilla de patata"] ->
+      |> Mox.expect(:embeddings, fn ["medidas y propuestas sobre la tortilla de patata"] ->
         {:ok, [[0, 0.2, 0.2]]}
       end)
 

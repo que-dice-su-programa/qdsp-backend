@@ -10,7 +10,7 @@ defmodule QDSPWeb.RateLimitTest do
          podemos: prohibirá la tortilla de patata sin cebolla
          """}
       end)
-      |> Mox.expect(:embeddings, 3, fn ["la tortilla de patata"] ->
+      |> Mox.expect(:embeddings, 3, fn ["medidas y propuestas sobre la tortilla de patata"] ->
         {:ok, [[0, 0.2, 0.2]]}
       end)
 

@@ -13,7 +13,7 @@ defmodule QDSP.Bot do
     sample_size = Keyword.get(opts, :sample_size, 2)
     embeddings = Keyword.get(opts, :embeddings, QDSP.Bot.Index.get())
 
-    with {:ok, question_embedding} <- Embeddings.embed(question) do
+    with {:ok, question_embedding} <- Embeddings.embed("medidas y propuestas sobre #{question}") do
       context =
         @parties
         |> Enum.map(fn party ->
@@ -31,7 +31,7 @@ defmodule QDSP.Bot do
         Pregunta:
         Qué propone cada partido sobre #{question}?
 
-        Responde brevemente, 350 characteres aprox,
+        Responde brevemente, 450 characteres aprox,
         por separado para cada partido de esta lista, usando estrictamente este formato:
 
         #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
@@ -39,10 +39,11 @@ defmodule QDSP.Bot do
         instructions: """
         Eres un analista político totalmente imparcial, especializado en
         comparar programas electorales. La información de los programas
-        electorales tiene prioridad. No respondes preguntas sobre temas
-        no relacionados con los programas electorales. Si alguien pregunta
-        algo no relacionado, simplemente respondes "No lo sé, pero soy un 🤖,
-        prueba a formular la pregunta de otra manera.".
+        electorales tiene prioridad. Utilizas un vocabulario sencillo para que
+        sea fácild e entender. Priorizas mencionar medidas específicas.
+        No respondes preguntas sobre temas no relacionados con los programas
+        electorales. Si alguien pregunta algo no relacionado, simplemente
+        respondes "No lo sé, pero soy un 🤖, prueba a formular la pregunta de otra manera.".
         """
       )
       |> parse_response(context)
