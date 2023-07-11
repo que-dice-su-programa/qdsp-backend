@@ -3,6 +3,8 @@ defmodule QDSPWeb.AskController do
 
   alias QDSP.Cache
 
+  require Logger
+
   def ask(conn, params) do
     question = Map.get(params, "q")
 
@@ -20,18 +22,20 @@ defmodule QDSPWeb.AskController do
   end
 
   def cached(key, fun) do
-    case Cache.Local.get(key) do
+    case Cache.Redis.get(key) do
       {:ok, nil} ->
         with {:ok, value} <- fun.() do
-          Cache.Local.set(key, value)
+          Cache.Redis.set(key, value)
           {:ok, value}
         end
 
       {:ok, value} ->
         {:ok, value}
 
-      e ->
-        e
+      {:error, e} ->
+        Logger.error(e)
+
+        fun.()
     end
   end
 

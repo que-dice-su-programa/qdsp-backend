@@ -28,6 +28,11 @@ if System.get_env("PHX_SERVER") do
   config :qdsp, QDSPWeb.Endpoint, server: true
 end
 
+config :qdsp,
+  cache_enabled: not (System.get_env("CACHE_ENABLED") == "false"),
+  redis_host: System.get_env("REDIS_HOST") || "localhost",
+  redis_port: System.get_env("REDIS_PORT") || 6379
+
 if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
