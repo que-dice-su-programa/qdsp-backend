@@ -10,8 +10,6 @@ import Config
 config :qdsp,
   namespace: QDSP
 
-config :qdsp, cache_enabled: true
-
 # Configures the endpoint
 config :qdsp, QDSPWeb.Endpoint,
   server: true,

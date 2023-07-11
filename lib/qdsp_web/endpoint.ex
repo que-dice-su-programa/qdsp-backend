@@ -55,6 +55,5 @@ defmodule QDSPWeb.Endpoint do
   plug Plug.Session, @session_options
   plug CORSPlug, origin: "https://quedicesuprograma.es"
 
-
   plug QDSPWeb.Router
 end

@@ -55,7 +55,8 @@ defmodule QDSP.MixProject do
       {:openai, "~> 0.5.1"},
 
       # Cache
-      {:cachex, "~> 3.6"}
+      {:cachex, "~> 3.6"},
+      {:redix, "~> 1.1"}
     ]
   end
 

@@ -17,6 +17,7 @@ defmodule QDSP.Application do
       # Cache
       {Cachex, name: :question_cache},
       {QDSP.Bot.Index, name: QDSP.Bot.Index},
+      {Redix, name: :cache, host: redis_host(), port: redis_port()},
       # Start the Endpoint (http/https)
       QDSPWeb.Endpoint
       # Start a worker by calling: QDSP.Worker.start_link(arg)
@@ -36,4 +37,7 @@ defmodule QDSP.Application do
     QDSPWeb.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  defp redis_host(), do: Application.get_env(:qdsp, :redis_host)
+  defp redis_port(), do: Application.get_env(:qdsp, :redis_port)
 end
