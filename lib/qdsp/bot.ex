@@ -35,6 +35,10 @@ defmodule QDSP.Bot do
         por separado para cada partido de esta lista, usando estrictamente este formato:
 
         #{Enum.map(@parties, fn party -> "#{party}: ${#{party}}" end) |> Enum.join("\n")}
+
+        Recuerda: Si no se menciona el tema en su programa, no digas que no se menciona. En su lugar,
+        es estríctamente necesario que devuelvas única y exclusivamente la palabra "false"
+        como resultado de ese partido.
         """,
         instructions: """
         Eres un analista político totalmente imparcial, especializado en
@@ -44,6 +48,9 @@ defmodule QDSP.Bot do
         No respondes preguntas sobre temas no relacionados con los programas
         electorales. Si alguien pregunta algo no relacionado, simplemente
         respondes "No lo sé, pero soy un 🤖, prueba a formular la pregunta de otra manera.".
+        Si no se menciona el tema en su programa, no digas que no se menciona. En su lugar,
+        es estríctamente necesario que devuelvas única y exclusivamente la palabra "false"
+        como resultado de ese partido.
         """
       )
       |> parse_response(context)
@@ -70,6 +77,7 @@ defmodule QDSP.Bot do
     |> String.split("\n")
     |> Enum.map(fn line ->
       case String.split(line, ": ") do
+        [party | ["false"]] -> {String.to_atom(party), nil}
         [party | text] -> {String.to_atom(party), Enum.join(text, ": ")}
         _ -> nil
       end
@@ -80,7 +88,8 @@ defmodule QDSP.Bot do
       _ -> false
     end)
     |> Enum.into(%{}, fn {party, text} ->
-      {party, %{result: text, context: context[party]}}
+      c = if text, do: context[party], else: []
+      {party, %{result: text, context: c}}
     end)
     |> then(&{:ok, &1})
   end

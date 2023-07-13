@@ -14,7 +14,7 @@ defmodule QDSP.BotTest do
         {"La tortilla de patata se llamará tortilla española", [0, 0.1, -0.2]}
       ],
       pp: [
-        {"La tortilla de patata es gallega", [0, 0.1, -0.2]}
+        {"Las bicicletas son el demonio", [0, 0.1, -0.2]}
       ],
       psoe: [
         {"La tortilla de patata es vasca", [0, 0.1, -0.2]}
@@ -31,7 +31,7 @@ defmodule QDSP.BotTest do
                sumar: Prohibiremos la tortilla de patata sin cebolla
                psoe: La tortilla de patata es vasca
                vox: La tortilla de patata se llamará tortilla española
-               pp: La tortilla de patata es gallega
+               pp: Las bicicletas son el demonio
 
                Pregunta:
                Qué propone cada partido sobre la tortilla de patata?
@@ -43,6 +43,10 @@ defmodule QDSP.BotTest do
                psoe: ${psoe}
                vox: ${vox}
                pp: ${pp}
+
+               Recuerda: Si no se menciona el tema en su programa, no digas que no se menciona. En su lugar,
+               es estríctamente necesario que devuelvas única y exclusivamente la palabra "false"
+               como resultado de ese partido.
                """
 
         assert instructions == """
@@ -53,6 +57,9 @@ defmodule QDSP.BotTest do
                No respondes preguntas sobre temas no relacionados con los programas
                electorales. Si alguien pregunta algo no relacionado, simplemente
                respondes "No lo sé, pero soy un 🤖, prueba a formular la pregunta de otra manera.".
+               Si no se menciona el tema en su programa, no digas que no se menciona. En su lugar,
+               es estríctamente necesario que devuelvas única y exclusivamente la palabra "false"
+               como resultado de ese partido.
                """
 
         {:ok,
@@ -60,7 +67,7 @@ defmodule QDSP.BotTest do
          sumar: prohibirá la tortilla de patata sin cebolla
          psoe: oficializará la tortilla de patata como vasca
          vox: renombrará la tortilla de patata como tortilla española
-         pp: oficializará la tortilla de patata como gallega
+         pp: false
          """}
       end)
       |> Mox.expect(:embeddings, fn ["medidas y propuestas sobre la tortilla de patata"] ->
@@ -89,10 +96,8 @@ defmodule QDSP.BotTest do
                     ]
                   },
                   pp: %{
-                    result: "oficializará la tortilla de patata como gallega",
-                    context: [
-                      "La tortilla de patata es gallega"
-                    ]
+                    result: nil,
+                    context: []
                   }
                 }}
     end
